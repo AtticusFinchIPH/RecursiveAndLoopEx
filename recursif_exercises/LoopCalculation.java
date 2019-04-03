@@ -177,7 +177,18 @@ public class LoopCalculation {
 		return fibonacciList[n-1];
 	}
 	
-	// Q11
+	// Q11 Subset Sum Problem
+	public static boolean isSubsetSum(int array[], int value) {
+		List<Integer> mediator = new ArrayList<Integer>();
+		for (int element : array) {
+			if (element == value) return true;
+			mediator.add(element);
+			for(Integer mediInteger : mediator) {
+				mediator.add(mediInteger+1);
+			}
+		}
+		return false;
+	}
 	
 	// Q12 Sum of n Squares
 	public static double sumSquare(int n) {

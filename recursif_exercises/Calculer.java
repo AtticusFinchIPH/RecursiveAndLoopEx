@@ -11,24 +11,31 @@ import java.util.Stack;
 public class Calculer {
 	
 	public static void main(String[] args) {
+				// Test Q1
 		System.out.println("R1: " + factoriel(5));
+				// Test Q2
 		System.out.println("R2: " + pgcd(120,18));
+				// Test Q3
 		System.out.print("R3: "); imprimerNbPremier(18);
+				// Test Q4
 		System.out.println("R4: " + sommeSn(5));
 		Stack<Integer> stack = new Stack<Integer>();
 		for (int i=0; i<10; i++)
             stack.push(i);
+				// Test Q5
 		System.out.println("R5:");
 		System.out.println("	Original Stack: " + stack);
 		reverseStack(stack);
 		System.out.println("	Reversed Stack: " + stack);
 		Integer[] myArrayForSomme = {3, 5, 7, 12, 13, 61};
+				// Test Q6
 		System.out.println("R6:");
 		System.out.print("	Original Array: ");
 		for(int i=0; i<myArrayForSomme.length; i++) System.out.print(myArrayForSomme[i] + " ");
 		System.out.println();
 		System.out.println("	Result = " + callSommeArray(myArrayForSomme));
 		Integer[] myArrayForSort = {3, 15, 7, 1, 95, 61, 8, 3, 100};
+				// Test Q7
 		System.out.println("R7:");
 		System.out.print("	Original Array: ");
 		for(int i=0; i<myArrayForSort.length; i++) System.out.print(myArrayForSort[i] + " ");
@@ -38,14 +45,21 @@ public class Calculer {
 		for(int i=0; i<myArrayForSort.length; i++) System.out.print(myArrayForSort[i] + " ");
 		System.out.println();
 		int[] arrayCountNeg = {1, 12, -6, -8, 38, 0, -100, -23};
-		System.out.println("R8: " + callCountNegNumber(arrayCountNeg));
-		System.out.println("R9: " + callConverteur(1011));
+				// Test Q8, 9, 10
+		System.out.println("R8: " + callCountNegNumber(arrayCountNeg));		
+		System.out.println("R9: " + callConverteur(1011));		
 		System.out.println("R10: " + fibonacci(11));
-		int[] subSet = {3, 34, 4, 12, 5, 2};
-		int trueValue1 = 20;
-		int trueValue2 = 46;
-		int falseValue = 13;
-		
+				// Test Q11
+		int subSet[] = {3, 34, 4, 12, 5, 2, -60, -110};
+		int trueValue1 = 24;
+		int trueValue2 = 40;
+		int falseValue1 = 13;
+		int falseValue2 = 0;
+		System.out.println("R11: " + callIsSubsetSum(subSet, trueValue1) + " "
+		+ callIsSubsetSum(subSet, trueValue2) + " "
+		+ callIsSubsetSum(subSet, falseValue1) + " "
+		+ callIsSubsetSum(subSet, falseValue2));
+			// Test Q11, 12, 13, 14, 15, 16, 17
 		System.out.println("R12: " + sumSquare(6));
 		System.out.println("R13: " + callReverseNumber(8162));
 		System.out.println("R14: " + countDigitNumber(123456));
@@ -222,8 +236,36 @@ public class Calculer {
 	}
 	
 	// Q11 Subset Sum Problem
-	public static boolean isSubsetSum(int[] array, int compareValue) {
-		return true;
+	public static boolean callIsSubsetSum(int[] array, int comparedValue) {
+		int length = array.length;
+		if(comparedValue == 0) {
+			int last = array[length-1];
+			//array[length-1] = 0;
+			return isSubsetSum(array, length-1, -last);
+		}
+		return isSubsetSum(array, length, comparedValue);
+	}
+	
+	public static boolean isSubsetSum(int set[],int n, int sum) {
+		/*
+		 * ***** First Method
+		 * A Set of n values satisfies a comparedValue when
+		 * its SubSet of n-1 values satisfies
+		 * - comparedValue
+		 * - or (comparedValue - n th element of Set(n))
+		 * or n th element = comparedValue;
+		 */
+		 // Base Cases 
+        if (sum == 0) return true; 
+        if (n == 0 && sum != 0)  return false;         
+        // If last element is greater than  
+        // sum, then ignore it 
+        if (set[n-1] > sum) return isSubsetSum(set, n-1, sum);           
+        /* else, check if sum can be obtained  
+        by any of the following 
+            (a) including the last element 
+            (b) excluding the last element */
+        return isSubsetSum(set, n-1, sum) || isSubsetSum(set, n-1, sum-set[n-1]); 
 	}
 	
 	// Q12 Sum of Square
