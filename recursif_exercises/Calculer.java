@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+/*
+ * Solve problems by using Recursive method.
+ */
+
 public class Calculer {
-	
 	
 	public static void main(String[] args) {
 		System.out.println("R1: " + factoriel(5));
@@ -105,21 +108,21 @@ public class Calculer {
 	// Q5 Reverse a Stack
 	public static void reverseStack(Stack st) {
 		if (st.size() > 0) {
-			Object out = st.peek(); 
-            st.pop(); 
-            reverseStack(st);   
-            
+			Object out = st.pop(); // Must use Object type cause pop() return only Object type.
+			/* 
+			 * ReverseStack iterates until st's size = 0
+			 * Then, it comes back and executes next command (insertAtBottom).
+			 */
+            reverseStack(st);              
             insertAtBottom(st, out);
 		}
 	}
 	
 	public static void insertAtBottom(Stack st, Object in) {
-		if (st.isEmpty()) {
+		if (st.isEmpty()) { // Equivalent to size() == 0.
 			st.push(in);
 		} else {
-			Object a = st.peek(); 
-            st.pop();
-            //System.out.print(a + " ");
+			Object a = st.pop(); // Must use Object type cause pop() return only Object type.
             insertAtBottom(st, in);
             st.push(a);
 		}
@@ -213,7 +216,8 @@ public class Calculer {
 	
 	// Q10 Fibonacci
 	public static long fibonacci(long n) {
-		if (n==1 || n==2) return 1;
+		if (n==1) return 0;
+		if (n==2) return 1;
 		return fibonacci(n-1) + fibonacci(n-2);		
 	}
 	
