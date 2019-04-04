@@ -22,13 +22,13 @@ public class LoopCalculation {
 		System.out.println("	Original Stack: " + stack);
 		reverseStack(stack);
 		System.out.println("	Reversed Stack: " + stack);
-		Integer[] myArrayForSum = {3, 5, 7, 12, 13, 61};
+		int[] myArrayForSum = {3, 5, 7, 12, 13, 61};
 		System.out.println("R6:");
 		System.out.print("	Original Array: ");
 		for(int i=0; i<myArrayForSum.length; i++) System.out.print(myArrayForSum[i] + " ");
 		System.out.println();
 		System.out.println("	Result = " + sumOfArray(myArrayForSum));
-		Integer[] myArrayForSort = {3, 15, 7, 1, 95, 61, 8, 3, 100};
+		int[] myArrayForSort = {3, 15, 7, 1, 95, 61, 8, 3, 100};
 		System.out.println("R7:");
 		System.out.print("	Original Array: ");
 		for(int i=0; i<myArrayForSort.length; i++) System.out.print(myArrayForSort[i] + " ");
@@ -41,7 +41,16 @@ public class LoopCalculation {
 		System.out.println("R8: " + countNegNumber(arrayCountNeg));
 		System.out.println("R9: " + digitalDecimal(1011));
 		System.out.println("R10: " + fibonacci(11));
-		
+		// Test Q11
+				int subSet[] = {3, 10, 7, 2, 8};
+				int trueValue1 = 11;
+				int trueValue2 = 18;
+				int falseValue1 = 6;
+				int falseValue2 = 1;
+				System.out.println("R11: " + isSubsetSum(subSet, trueValue1) + " "
+				+ isSubsetSum(subSet, trueValue2) + " "
+				+ isSubsetSum(subSet, falseValue1) + " "
+				+ isSubsetSum(subSet, falseValue2));
 		System.out.println("R12: " + sumSquare(6));
 		System.out.println("R13: " + reverseNumber(8162));
 		System.out.println("R14: " + countDigitNumber(123456));
@@ -119,7 +128,7 @@ public class LoopCalculation {
 	}
 	
 	// Q6 Sum of an Array
-	public static int sumOfArray(Integer[] array) {
+	public static int sumOfArray(int[] array) {
 		int sum = 0;
 		for (int i=0; i<array.length; i++) {
 			sum+=array[i];
@@ -128,7 +137,7 @@ public class LoopCalculation {
 	}
 	
 	// Q7 Bubble Sort
-	public static void bubbleSort(Integer[] array) {
+	public static void bubbleSort(int[] array) {
 		for (int i = array.length-1; i>0; i--) {
 			for(int j = 0; j<i; j++) {
 				if(array[j] < array[j+1]) swap(array, j, j+1);
@@ -136,7 +145,7 @@ public class LoopCalculation {
 		}
 	}
 	
-	public static void swap(Integer[] array, int i, int j) {
+	public static void swap(int[] array, int i, int j) {
 		Integer mediator;
 		mediator = array[i];
 		array[i] = array[j];
@@ -178,17 +187,119 @@ public class LoopCalculation {
 	}
 	
 	// Q11 Subset Sum Problem
-	public static boolean isSubsetSum(int array[], int value) {
-		List<Integer> mediator = new ArrayList<Integer>();
-		for (int element : array) {
-			if (element == value) return true;
-			mediator.add(element);
-			for(Integer mediInteger : mediator) {
-				mediator.add(mediInteger+1);
+//	/*
+//	 * This part's for general problem (including negative numbers.
+//	 * However, it hasn't completed
+//	 *
+//	public static boolean isSubsetSum(int array[], int value) {
+//		int lower = sumNegatif(array);
+//		int upper = sumPositif(array);
+//		/*
+//		 *  If value is lower than sum of negative numbers
+//		 *  of greater than sum of positive numbers
+//		 *  then return false.
+//		 *
+//		if (value < lower || value > upper) return false;
+//		/*
+//		 * If not, using Dynamic Algorithm
+//		 *
+//		bubbleSort(array);
+//		int n = value - lower + 1;
+//		Boolean[][] table = new Boolean[array.length][n];
+//		for (int i=0; i<array.length; i++) {
+//			for (int j=0; j<n; j++) {
+//				// First columm's always true
+//				if(j == 0) table[i][j] = true;
+//				// Initialize first row
+//				if(i == 0 && )
+//				if
+//				else {
+//					if(array[i] > lower + j) table[i][j] = table[i-1][j];
+//					
+//				}
+//			}
+//		}
+//		
+//		for(int i=0; i<array.length; i++) {
+//			if (table[i][n-1]) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
+//	
+//	public static int sumPositif(int array[]) {
+//		int sum = 0;
+//		for (int element : array) {
+//			if (element >= 0) {
+//				sum += element;
+//			}
+//		}
+//		return sum;
+//	}
+//	
+//	public static int sumNegatif(int array[]) {
+//		int sum=0;
+//		for (int element : array) {
+//			if (element >= 0) {
+//				sum += element;
+//			}
+//		}
+//		return sum;
+//	}
+	
+	/*
+	 * This function works only for case of positive array
+	 */
+	public static boolean isSubsetSum(int[] array, int value) {
+		/*
+		 * Attention, array after this sort is reversed with what we actually want.
+		 * That why we reverse this array one again.
+		 */
+		bubbleSort(array);
+		Integer[] mediator = new Integer[array.length];
+		for (int i=0; i<array.length; i++) {
+			mediator[array.length -1 - i] = array[i];
+		}
+		for (int i=0; i<array.length; i++) {
+			array[i] = mediator[i];
+		}
+		
+		Boolean[][] table = new Boolean[array.length][value+1];
+		for (int i=0; i<array.length; i++) {
+			for (int j=0; j<value+1; j++) {
+				// First columm's always true
+				if(j == 0) table[i][j] = true;
+				else {
+					// Initialize first row
+					if(i == 0 && j == array[0]) table[i][j] = true;
+					else if(i == 0) table[i][j] = false;
+					else {
+						// Other rows
+						if(j < array[i]) table[i][j] = table[i-1][j];
+						else if (j == array[i]) table[i][j] = true;
+						else table[i][j] = table[i-1][j-array[i]];
+					}
+				}
+			}
+		}
+		
+		
+//		for (int i=0; i<array.length; i++) {
+//			for (int j=0; j<value+1; j++) {
+//				System.out.print(table[i][j] + " ");
+//			}
+//			System.out.println();
+//		}
+		
+		for(int i=0; i<array.length; i++) {	
+			if (table[i][value]) {
+				return true;
 			}
 		}
 		return false;
 	}
+	
 	
 	// Q12 Sum of n Squares
 	public static double sumSquare(int n) {

@@ -59,7 +59,7 @@ public class Calculer {
 		+ callIsSubsetSum(subSet, trueValue2) + " "
 		+ callIsSubsetSum(subSet, falseValue1) + " "
 		+ callIsSubsetSum(subSet, falseValue2));
-			// Test Q11, 12, 13, 14, 15, 16, 17
+			// Test Q12, 13, 14, 15, 16, 17
 		System.out.println("R12: " + sumSquare(6));
 		System.out.println("R13: " + callReverseNumber(8162));
 		System.out.println("R14: " + countDigitNumber(123456));
